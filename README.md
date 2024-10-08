@@ -1,4 +1,4 @@
-# Vroum-project
+# Micro Racer
 
 ## Structure des dossiers
 - <ins>Art :</ins> un dossier pour stocker les assets artistiques originaux
