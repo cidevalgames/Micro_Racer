@@ -276,8 +276,8 @@ MonoBehaviour:
   spring: {fileID: 1540861}
   rest_position: {x: 0, y: 0, z: 0}
   offset: 0
-  strength: 10
-  damping: 10
+  strength: 100
+  damping: 15
 --- !u!1 &168383046
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,8 +432,8 @@ MonoBehaviour:
   spring: {fileID: 1725627053}
   rest_position: {x: 0, y: 0, z: 0}
   offset: 0
-  strength: 10
-  damping: 10
+  strength: 100
+  damping: 15
 --- !u!1 &182238197
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +831,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.0675815, y: 0.5086969, z: 2.006897}
   m_Center: {x: 0, y: 0.013539866, z: 0.034816742}
@@ -1183,8 +1183,8 @@ MonoBehaviour:
   spring: {fileID: 1725627053}
   rest_position: {x: 0, y: 0, z: 0}
   offset: 0
-  strength: 10
-  damping: 10
+  strength: 100
+  damping: 15
 --- !u!54 &1725627053
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1305,8 +1305,8 @@ MonoBehaviour:
   spring: {fileID: 2142475509}
   rest_position: {x: 0, y: 0, z: 0}
   offset: 0
-  strength: 10
-  damping: 10
+  strength: 100
+  damping: 15
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
