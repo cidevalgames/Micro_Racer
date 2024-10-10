@@ -15,7 +15,7 @@ public class Wheel_Script : MonoBehaviour
 
     void Start()
     {
-        rest_position = transform.position;
+        rest_position = transform.localPosition;
     }
 
     private void Update()
