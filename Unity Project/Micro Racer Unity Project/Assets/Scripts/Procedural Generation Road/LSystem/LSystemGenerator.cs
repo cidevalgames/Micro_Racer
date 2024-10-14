@@ -9,15 +9,14 @@ namespace Procedural_Generation_Road.LSystem
         [SerializeField] private string rootSentence;
         [SerializeField, Range(0, 10)] private int iterationLimit = 1;
 
-        private void Start()
-        {
-            GenerateSentence();
-        }
-
         [ContextMenu("Generate sentence")]
-        public void GenerateSentence()
+        public string GenerateSentence()
         {
-            Debug.Log(ProcessWord(rootSentence));
+            string sentence = ProcessWord(rootSentence);
+
+            Debug.Log(sentence);
+
+            return sentence;
         }
 
         public string ProcessWord(string word, int iterationIndex = 0)
