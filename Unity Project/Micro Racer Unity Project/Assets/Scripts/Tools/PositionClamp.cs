@@ -4,7 +4,7 @@ public class PositionClamp : MonoBehaviour
 {
     [SerializeField] Transform clampedTransform;
     [SerializeField] Vector3 minWorldPos, maxWorldPos;
-    [SerializeField] bool lockWorldPosX,lockWorldPosY,lockWorldPosZ; //pas utile pour l'instant mais go faire un module multiClamp qui s'occupe de la rotation et de la Scale
+    [SerializeField] bool lockWorldPosX,lockWorldPosY,lockWorldPosZ;
     void Start()
     {
         if (clampedTransform == null)
