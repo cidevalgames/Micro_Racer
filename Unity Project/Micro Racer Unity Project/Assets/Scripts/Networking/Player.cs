@@ -1,9 +1,9 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 
-namespace Networking.HelloWorld
+namespace Networking.Car
 {
-    public class HelloWorldPlayer : NetworkBehaviour
+    public class Player : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 

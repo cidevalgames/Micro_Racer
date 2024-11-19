@@ -1,9 +1,9 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Networking.HelloWorld
+namespace Networking.Car
 {
-    public class HelloWorldManager : MonoBehaviour
+    public class PlayerManager : MonoBehaviour
     {
         private NetworkManager m_NetworkManager;
 

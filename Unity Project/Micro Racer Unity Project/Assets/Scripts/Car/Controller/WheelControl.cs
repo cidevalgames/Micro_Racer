@@ -6,7 +6,7 @@ namespace Car.Controller
     {
         public Transform wheelModel;
 
-        [HideInInspector] public WheelCollider WheelCollider;
+        /*[HideInInspector] */public WheelCollider WheelCollider;
 
         // Create properties for the CarControl script
         // (You should enable/disable these via the 
