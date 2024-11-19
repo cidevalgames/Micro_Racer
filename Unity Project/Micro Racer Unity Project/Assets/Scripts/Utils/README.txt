@@ -1,4 +1,1 @@
-"F:\Users\valle\Documents\GitHub\Micro_Racer\Unity Project\Micro Racer Unity Project\Build\Multiplayer\Micro Racers.exe" -mode server & "F:\Users\valle\Documents\GitHub\Micro_Racer\Unity Project\Micro Racer Unity Project\Build\Multiplayer\Micro Racers.exe" -mode client
-
-
-Copier-coller ceci pour tester la build
+Ouvrez les fichiers client.bat et server.bat à la racine du projet pour tester le networking
