@@ -4,7 +4,7 @@ using UnityEngine;
 public class WheelControlV2 : MonoBehaviour
 {
     public Transform wheelModel;
-    public TrailRenderer slideTrailRenderer;
+    //public TrailRenderer slideTrailRenderer;
 
     [HideInInspector] public WheelCollider wheelCollider;
 
@@ -41,12 +41,12 @@ public class WheelControlV2 : MonoBehaviour
         if (distanceTraveledByTheWheel > carVelocity + x||distanceTraveledByTheWheel< carVelocity-x)
         {
             //is slidin
-            slideTrailRenderer.enabled = true;
+            //slideTrailRenderer.enabled = true;
         }
         else
         {
             //is not slidin
-            slideTrailRenderer.enabled = false;
+            //slideTrailRenderer.enabled = false;
         }
     }
 }
