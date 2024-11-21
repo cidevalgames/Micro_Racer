@@ -69,6 +69,7 @@ public class CarControllerV2 : MonoBehaviour
         {
             // Check for Wheelspin
             wheel.CheckForSliping(rigidBody.GetPointVelocity(wheel.transform.position).magnitude, slidingDifferenceTreshold);
+            print(rigidBody.GetPointVelocity(wheel.transform.position).magnitude);
             // Apply steering to Wheel colliders that have "Steerable" enabled
             if (wheel.steerable)
             {
