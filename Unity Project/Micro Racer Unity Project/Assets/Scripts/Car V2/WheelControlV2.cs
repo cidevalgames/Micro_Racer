@@ -1,10 +1,12 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class WheelControlV2 : MonoBehaviour
 {
     public Transform wheelModel;
+    public TrailRenderer slideTrailRenderer;
 
-    [HideInInspector] public WheelCollider WheelCollider;
+    [HideInInspector] public WheelCollider wheelCollider;
 
     // Create properties for the CarControl script
     // (You should enable/disable these via the 
@@ -12,13 +14,13 @@ public class WheelControlV2 : MonoBehaviour
     public bool steerable;
     public bool motorized;
 
-    Vector3 position;
-    Quaternion rotation;
+    public Vector3 position;
+    public Quaternion rotation;
 
     // Start is called before the first frame update
     private void Start()
     {
-        WheelCollider = GetComponent<WheelCollider>();
+        wheelCollider = GetComponent<WheelCollider>();
     }
 
     // Update is called once per frame
@@ -26,8 +28,25 @@ public class WheelControlV2 : MonoBehaviour
     {
         // Get the Wheel collider's world pose values and
         // use them to set the wheel model's position and rotation
-        WheelCollider.GetWorldPose(out position, out rotation);
+        wheelCollider.GetWorldPose(out position, out rotation);
         wheelModel.transform.position = position;
         wheelModel.transform.rotation = rotation;
+    }
+
+    //Checking if the wheel is spinning at a diferent speed than the car is moving
+    public void CheckForSliping(float carVelocity, float x)
+    {
+        float distanceTraveledByTheWheel = (wheelCollider.radius * 2 * math.PI) * (wheelCollider.rpm / 60 / 60);
+        print("distanceTraveledByTheWheel = "+ distanceTraveledByTheWheel);
+        if (distanceTraveledByTheWheel > carVelocity + x||distanceTraveledByTheWheel< carVelocity-x)
+        {
+            //is slidin
+            slideTrailRenderer.enabled = true;
+        }
+        else
+        {
+            //is not slidin
+            slideTrailRenderer.enabled = false;
+        }
     }
 }

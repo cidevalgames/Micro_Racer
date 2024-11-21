@@ -3,31 +3,38 @@ using UnityEngine;
 public class CarControllerV2 : MonoBehaviour
 {
     public float motorTorque = 2000;
+    public AnimationCurve motorTorqueCurve;
     public float brakeTorque = 2000;
-    public float maxSpeed = 20;
+    public AnimationCurve brakeTorqueCurve;
+    public float maxSpeed = 50;
     public float steeringRange = 30;
     public float steeringRangeAtMaxSpeed = 10;
-    public float centreOfGravityOffset = -1f;
+    public AnimationCurve steeringHelpCurve;//Not implemented yet
+    public GameObject centreOfGravity;
 
-    WheelControlV2[] wheels;
-    Rigidbody rigidBody;
+    public WheelControlV2[] wheels;
+    public Rigidbody rigidBody;
+    [Range(0, 1.001f)]
+    public float slidingDifferenceTreshold;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
 
-        // Adjust center of mass vertically, to help prevent the car from rolling
-        rigidBody.centerOfMass += Vector3.up * centreOfGravityOffset;
-
-        // Find all child GameObjects that have the WheelControl script attached
+        //find all child gameobjects that have the wheelcontrol script attached
         wheels = GetComponentsInChildren<WheelControlV2>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void SetupCenterOfMass()
     {
+        // Adjust center of mass vertically, to help prevent the car from rolling
+        rigidBody.centerOfMass = centreOfGravity.transform.position;
+    }
 
+    // Update is called once per frame
+    void LateUpdate()
+    {
         float vInput = Input.GetAxis("Vertical");
         float hInput = Input.GetAxis("Horizontal");
 
@@ -39,10 +46,16 @@ public class CarControllerV2 : MonoBehaviour
         // Calculate how close the car is to top speed
         // as a number from zero to one
         float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
+        print(speedFactor);
 
         // Use that to calculate how much torque is available 
         // (zero torque at top speed)
-        float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
+        float currentMotorTorque = 0;
+        if (vInput != 0)
+        {
+            currentMotorTorque = motorTorqueCurve.Evaluate(speedFactor) * 10000;
+        }
+        ///float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
 
         // �and to calculate how much to steer 
         // (the car steers more gently at top speed)
@@ -54,10 +67,12 @@ public class CarControllerV2 : MonoBehaviour
 
         foreach (var wheel in wheels)
         {
+            // Check for Wheelspin
+            wheel.CheckForSliping(rigidBody.GetPointVelocity(wheel.transform.position).magnitude, slidingDifferenceTreshold);
             // Apply steering to Wheel colliders that have "Steerable" enabled
             if (wheel.steerable)
             {
-                wheel.WheelCollider.steerAngle = hInput * currentSteerRange;
+                wheel.wheelCollider.steerAngle = hInput * currentSteerRange;
             }
 
             if (isAccelerating)
@@ -65,16 +80,16 @@ public class CarControllerV2 : MonoBehaviour
                 // Apply torque to Wheel colliders that have "Motorized" enabled
                 if (wheel.motorized)
                 {
-                    wheel.WheelCollider.motorTorque = vInput * currentMotorTorque;
+                    wheel.wheelCollider.motorTorque = vInput * currentMotorTorque;
                 }
-                wheel.WheelCollider.brakeTorque = 0;
+                wheel.wheelCollider.brakeTorque = 0;
             }
             else
             {
                 // If the user is trying to go in the opposite direction
                 // apply brakes to all wheels
-                wheel.WheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
-                wheel.WheelCollider.motorTorque = 0;
+                wheel.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
+                wheel.wheelCollider.motorTorque = 0;
             }
         }
     }
