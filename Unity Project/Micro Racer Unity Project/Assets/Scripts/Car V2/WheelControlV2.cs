@@ -4,7 +4,7 @@ using UnityEngine;
 public class WheelControlV2 : MonoBehaviour
 {
     public Transform wheelModel;
-    //public TrailRenderer slideTrailRenderer;
+    public TrailRenderer slideTrailRenderer;
 
     [HideInInspector] public WheelCollider wheelCollider;
 
@@ -36,17 +36,17 @@ public class WheelControlV2 : MonoBehaviour
     //Checking if the wheel is spinning at a diferent speed than the car is moving
     public void CheckForSliping(float carVelocity, float x)
     {
-        float distanceTraveledByTheWheel = (wheelCollider.radius * 2 * math.PI) * (wheelCollider.rpm / 60 / 60);
+        float distanceTraveledByTheWheel = math.abs((wheelCollider.radius * 2 * math.PI) * (wheelCollider.rpm / 60));
         print("distanceTraveledByTheWheel = "+ distanceTraveledByTheWheel);
         if (distanceTraveledByTheWheel > carVelocity + x||distanceTraveledByTheWheel< carVelocity-x)
         {
             //is slidin
-            //slideTrailRenderer.enabled = true;
+            slideTrailRenderer.emitting = true;
         }
         else
         {
             //is not slidin
-            //slideTrailRenderer.enabled = false;
+            slideTrailRenderer.emitting = false;
         }
     }
 }

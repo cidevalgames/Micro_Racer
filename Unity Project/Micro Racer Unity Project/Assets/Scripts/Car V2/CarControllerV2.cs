@@ -33,11 +33,12 @@ public class CarControllerV2 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
+        bool handBrake = Input.GetKey(KeyCode.Space);
         float vInput = Input.GetAxis("Vertical");
         float hInput = Input.GetAxis("Horizontal");
-
+        print(handBrake);
         // Calculate current speed in relation to the forward direction of the car
         // (this returns a negative number when traveling backwards)
         float forwardSpeed = Vector3.Dot(transform.forward, rigidBody.linearVelocity);
@@ -46,14 +47,14 @@ public class CarControllerV2 : MonoBehaviour
         // Calculate how close the car is to top speed
         // as a number from zero to one
         float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
-        print(speedFactor);
+        print("speedFector" + speedFactor * 100);
 
         // Use that to calculate how much torque is available 
         // (zero torque at top speed)
         float currentMotorTorque = 0;
         if (vInput != 0)
         {
-            currentMotorTorque = motorTorqueCurve.Evaluate(speedFactor) * 10000;
+            currentMotorTorque = motorTorqueCurve.Evaluate(speedFactor) * 1000;
         }
         ///float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
 
@@ -68,29 +69,38 @@ public class CarControllerV2 : MonoBehaviour
         foreach (var wheel in wheels)
         {
             // Check for Wheelspin
-            wheel.CheckForSliping(rigidBody.GetPointVelocity(wheel.transform.position).magnitude, slidingDifferenceTreshold);
+            wheel.CheckForSliping(Vector3.Dot(transform.forward, rigidBody.GetPointVelocity(wheel.transform.position)), slidingDifferenceTreshold);
             print(rigidBody.GetPointVelocity(wheel.transform.position).magnitude);
+
             // Apply steering to Wheel colliders that have "Steerable" enabled
             if (wheel.steerable)
             {
                 wheel.wheelCollider.steerAngle = hInput * currentSteerRange;
             }
 
-            if (isAccelerating)
+            if (handBrake)
             {
-                // Apply torque to Wheel colliders that have "Motorized" enabled
-                if (wheel.motorized)
-                {
-                    wheel.wheelCollider.motorTorque = vInput * currentMotorTorque;
-                }
-                wheel.wheelCollider.brakeTorque = 0;
+                wheel.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
+                wheel.wheelCollider.motorTorque = 0;
             }
             else
             {
-                // If the user is trying to go in the opposite direction
-                // apply brakes to all wheels
-                wheel.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
-                wheel.wheelCollider.motorTorque = 0;
+                if (isAccelerating)
+                {
+                    // Apply torque to Wheel colliders that have "Motorized" enabled
+                    if (wheel.motorized)
+                    {
+                        wheel.wheelCollider.motorTorque = vInput * currentMotorTorque;
+                    }
+                    wheel.wheelCollider.brakeTorque = 0;
+                }
+                else
+                {
+                    // If the user is trying to go in the opposite direction
+                    // apply brakes to all wheels
+                    wheel.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
+                    wheel.wheelCollider.motorTorque = 0;
+                }
             }
         }
     }
