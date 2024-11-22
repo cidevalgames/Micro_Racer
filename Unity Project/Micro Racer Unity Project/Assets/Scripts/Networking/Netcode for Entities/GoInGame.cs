@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Networking.Netcode.Entities.Ghost;
+using Networking.Netcode.Entities.Car;
 
 /// <summary>
 /// This allows sending RPCs between a stand alone build and the editor for testing purposes in the event when you finish this example
@@ -39,8 +40,11 @@ namespace Networking.Netcode.Entities
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            // Run only on entities with a CubeSpawner component data
-            state.RequireForUpdate<CubeSpawner>();
+            //// Run only on entities with a CubeSpawner component data
+            //state.RequireForUpdate<CubeSpawner>();
+
+            // Run only on entities with a CarSpawner component data
+            state.RequireForUpdate<CarSpawner>();
 
             var builder = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<NetworkId>()
@@ -75,8 +79,11 @@ namespace Networking.Netcode.Entities
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            // Run only on entities with a CubeSpawner component data
-            state.RequireForUpdate<CubeSpawner>();
+            //// Run only on entities with a CubeSpawner component data
+            //state.RequireForUpdate<CubeSpawner>();
+
+            // Run only on entities with a CarSpawner component data
+            state.RequireForUpdate<CarSpawner>();
 
             var builder = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<GoInGameRequest>()
@@ -109,8 +116,41 @@ namespace Networking.Netcode.Entities
 
             /// --- Ghost code ---
             
+            //// Get the prefab to instantiate
+            //var prefab = SystemAPI.GetSingleton<CubeSpawner>().Cube;
+
+            //// Get the name of the prefab being instantiated
+            //state.EntityManager.GetName(prefab, out var prefabName);
+            //var worldName = new FixedString32Bytes(state.WorldUnmanaged.Name);
+
+            //var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
+            //networkIdFromEntity.Update(ref state);
+
+            //foreach (var (reqSrc, reqEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<GoInGameRequest>().WithEntityAccess())
+            //{
+            //    commandBuffer.AddComponent<NetworkStreamInGame>(reqSrc.ValueRO.SourceConnection);
+
+            //    // Get the NetworkId for the requesting client
+            //    var networkId = networkIdFromEntity[reqSrc.ValueRO.SourceConnection];
+
+            //    // Log information about the connection request that includes the client's assigned NetworkId and the name of the prefab spawned
+            //    Debug.Log($"'{worldName}' setting connection '{networkId.Value}' to in game, spawning a Ghost '{prefabName}' for them!");
+
+            //    // Instantiate the prefab
+            //    var player = commandBuffer.Instantiate(prefab);
+            //    // Associate the instantiated prefab with the connected client's assigned NetworkId
+            //    commandBuffer.SetComponent(player, new GhostOwner { NetworkId = networkId.Value });
+            //    // Add the player to the linked entity group so it is destroyed automatically on disconnect
+            //    commandBuffer.AppendToBuffer(reqSrc.ValueRO.SourceConnection, new LinkedEntityGroup { Value = player });
+            //    commandBuffer.DestroyEntity(reqEntity);
+            //}
+
+            //commandBuffer.Playback(state.EntityManager);
+
+            /// --- Car code ---
+
             // Get the prefab to instantiate
-            var prefab = SystemAPI.GetSingleton<CubeSpawner>().Cube;
+            var prefab = SystemAPI.GetSingleton<CarSpawner>().Car;
 
             // Get the name of the prefab being instantiated
             state.EntityManager.GetName(prefab, out var prefabName);
