@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,8 +9,8 @@ namespace Networking.Netcode.Entities.Car
 
     public struct CarInput : IInputComponentData
     {
-        public float Horizontal;
-        public float Vertical;
+        public float2 Movement;
+        public float2 Look;
         public InputEvent Brake;
     }
 
@@ -43,8 +44,7 @@ namespace Networking.Netcode.Entities.Car
 
                 Vector2 moveValue = InputSystem.actions.FindAction("Move").ReadValue<Vector2>();
 
-                playerInput.ValueRW.Horizontal = moveValue.x;
-                playerInput.ValueRW.Vertical = moveValue.y;
+                playerInput.ValueRW.Movement = moveValue;
 
                 //if (Input.GetKey("left"))
                 //    playerInput.ValueRW.Horizontal -= 1;
