@@ -21297,7 +21297,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418678584732679321}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -21402,10 +21402,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0041656494
-      value: 0.04953003
-      inSlope: 88.15046
-      outSlope: 88.15046
+      time: 0.0015449524
+      value: 0.115753174
+      inSlope: 53.579617
+      outSlope: 53.579617
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
