@@ -40,7 +40,7 @@ namespace FishNet.Editing.Upgrading
 
         private static bool RemoveOrAddDefine(string define, bool removeDefine)
         {
-            string currentDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            string currentDefines = PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup));
             HashSet<string> definesHs = new();
             string[] currentArr = currentDefines.Split(';');
 
@@ -59,7 +59,7 @@ namespace FishNet.Editing.Upgrading
             if (modified)
             {
                 string changedDefines = string.Join(";", definesHs);
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, changedDefines);
+                PlayerSettings.SetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup), changedDefines);
             }
 
             return modified;

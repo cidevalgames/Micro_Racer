@@ -20,7 +20,7 @@ namespace FishNet.Demo.AdditiveScenes
 
         public override void OnStartServer()
         {
-            _wayPoints = GameObject.FindObjectsOfType<Waypoint>().ToList();
+            _wayPoints = GameObject.FindObjectsByType<Waypoint>(FindObjectsSortMode.None).ToList();
             /* Stagger spawn position slightly depending on player count.
              * Also inverse direction so players cross each other when more
              * than one. This is just demo fanciness. */

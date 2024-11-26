@@ -809,7 +809,10 @@ namespace FishNet.Component.Transforming
                 if (TryGetComponent(out Rigidbody2D c))
                 {
                     bool isKinematic = CanMakeKinematic();
-                    c.isKinematic = isKinematic;
+
+                    if (isKinematic)
+                        c.bodyType = RigidbodyType2D.Kinematic;
+
                     c.simulated = !isKinematic;
                     c.interpolation = RigidbodyInterpolation2D.None;
                 }

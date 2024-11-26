@@ -51,7 +51,7 @@ namespace FishNet.Component.Prediction
             Velocity = rb.linearVelocity;
             AngularVelocity = rb.angularVelocity;
             Simulated = simulated;
-            IsKinematic = rb.isKinematic;
+            IsKinematic = rb.bodyType == RigidbodyType2D.Kinematic;
         }
 
         public Rigidbody2DState(Rigidbody2D rb)
@@ -61,7 +61,7 @@ namespace FishNet.Component.Prediction
             Velocity = rb.linearVelocity;
             AngularVelocity = rb.angularVelocity;
             Simulated = rb.simulated;
-            IsKinematic = rb.isKinematic;
+            IsKinematic = rb.bodyType == RigidbodyType2D.Kinematic;
         }
     }
 
