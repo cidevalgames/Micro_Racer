@@ -7,6 +7,7 @@ public class CarControllerV2 : MonoBehaviour
     public float brakeTorque = 2000;
     public AnimationCurve brakeTorqueCurve;
     public float maxSpeed = 50;
+    public float speedFactor;
     public float steeringRange = 30;
     public float steeringRangeAtMaxSpeed = 10;
     public AnimationCurve steeringHelpCurve;//Not implemented yet
@@ -45,7 +46,7 @@ public class CarControllerV2 : MonoBehaviour
 
         // Calculate how close the car is to top speed
         // as a number from zero to one
-        float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
+        speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
         print(speedFactor);
 
         // Use that to calculate how much torque is available 
