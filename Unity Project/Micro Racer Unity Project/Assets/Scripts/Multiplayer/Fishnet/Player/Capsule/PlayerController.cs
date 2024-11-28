@@ -87,7 +87,10 @@ namespace Multiplayer.Fishnet.Player.Capsule
             // Stop client
 
             if (Input.GetKeyDown(KeyCode.Escape))
-                ServerManager.Kick(NetworkObject.LocalConnection, KickReason.Unset, LoggingType.Off, "");
+            {
+                Debug.Log("Escape");
+                NetworkManager.ClientManager.StopConnection();
+            }
 
             // Move
 
@@ -110,6 +113,18 @@ namespace Multiplayer.Fishnet.Player.Capsule
             _playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
 
             transform.Rotate(Vector3.up * _mouseX);
+        }
+
+        [ObserversRpc]
+        public void StopConnection()
+        {
+
+        }
+
+        [ServerRpc]
+        public void StopConnectionServer()
+        {
+
         }
     }
 }

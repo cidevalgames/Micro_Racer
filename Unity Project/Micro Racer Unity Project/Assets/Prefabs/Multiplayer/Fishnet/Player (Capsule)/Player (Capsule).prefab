@@ -106,6 +106,7 @@ MonoBehaviour:
   - {fileID: -715230104564713439}
   - {fileID: 627479920351435773}
   - {fileID: -618469507470343849}
+  - {fileID: 5115557659109266980}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -242,9 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e2a5f336cea5724ab3b8dfbe5c9b760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 7770969545422242175}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 7770969545422242175}
   _health:
     NetworkManager: {fileID: 0}
     NetworkBehaviour: {fileID: 0}
