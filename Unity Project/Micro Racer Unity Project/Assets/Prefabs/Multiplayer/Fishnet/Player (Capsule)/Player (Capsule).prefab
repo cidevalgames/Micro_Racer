@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3407930409474039137}
   - component: {fileID: 7770969545422242175}
   - component: {fileID: -715230104564713439}
+  - component: {fileID: 6237912592611724996}
+  - component: {fileID: 627479920351435773}
   m_Layer: 0
   m_Name: Player (Capsule)
   m_TagString: Untagged
@@ -81,7 +83,6 @@ MonoBehaviour:
   mouseSensitivityX: 30
   mouseSensitivityY: 30
   cameraYOffset: 1.5
-  bodyGraphics: {fileID: 0}
 --- !u!114 &7770969545422242175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +129,7 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 1800800640985768554
+  <AssetPathHash>k__BackingField: 6102291416543508658
   <SceneId>k__BackingField: 0
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
@@ -177,6 +178,37 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+--- !u!114 &6237912592611724996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175217750257179578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions: []
+--- !u!114 &627479920351435773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175217750257179578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a4ad8adaba709409ec885985589370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 7770969545422242175}
+  _networkObjectCache: {fileID: 0}
+  body: {fileID: 6077631430403486056}
 --- !u!1 &3186474525915486120
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +382,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a2682f10061f7a641aeacbdda8a25559, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
