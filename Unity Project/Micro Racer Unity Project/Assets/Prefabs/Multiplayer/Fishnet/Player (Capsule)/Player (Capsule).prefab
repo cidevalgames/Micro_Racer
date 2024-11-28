@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6237912592611724996}
   - component: {fileID: 627479920351435773}
   - component: {fileID: -618469507470343849}
+  - component: {fileID: 5115557659109266980}
   m_Layer: 0
   m_Name: Player (Capsule)
   m_TagString: Untagged
@@ -104,6 +105,7 @@ MonoBehaviour:
   - {fileID: 3407930409474039137}
   - {fileID: -715230104564713439}
   - {fileID: 627479920351435773}
+  - {fileID: -618469507470343849}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -223,11 +225,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ccd490dea7278042be3463590cbbfce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 3
+  _addedNetworkObject: {fileID: 7770969545422242175}
+  _networkObjectCache: {fileID: 7770969545422242175}
+  objectToSpawn: {fileID: 1685461865849534561, guid: fa80a3ae4cd97084f92c4beae7ffd35b, type: 3}
+  spawnedObject: {fileID: 0}
+--- !u!114 &5115557659109266980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175217750257179578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e2a5f336cea5724ab3b8dfbe5c9b760, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 7770969545422242175}
   _networkObjectCache: {fileID: 0}
-  objectToSpawn: {fileID: 1685461865849534561, guid: fa80a3ae4cd97084f92c4beae7ffd35b, type: 3}
-  spawnedObject: {fileID: 0}
+  _health:
+    NetworkManager: {fileID: 0}
+    NetworkBehaviour: {fileID: 0}
+    _value: 10
 --- !u!1 &3186474525915486120
 GameObject:
   m_ObjectHideFlags: 0

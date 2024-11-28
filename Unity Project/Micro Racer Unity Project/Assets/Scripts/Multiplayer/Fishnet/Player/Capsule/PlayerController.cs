@@ -1,3 +1,5 @@
+using FishNet.Managing.Logging;
+using FishNet.Managing.Server;
 using FishNet.Object;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,6 +22,9 @@ namespace Multiplayer.Fishnet.Player.Capsule
 
         private CharacterController m_characterController;
 
+        private Vector3 _cameraPosition;
+        private Quaternion _cameraRotation;
+
         public override void OnStartClient()
         {
             base.OnStartClient();
@@ -27,6 +32,10 @@ namespace Multiplayer.Fishnet.Player.Capsule
             if (base.IsOwner)
             {
                 _playerCamera = Camera.main;
+
+                _cameraPosition = _playerCamera.transform.position;
+                _cameraRotation = _playerCamera.transform.rotation;
+
                 _playerCamera.transform.position = transform.position + Vector3.up * cameraYOffset;
                 _playerCamera.transform.SetParent(transform);
             }
@@ -34,6 +43,28 @@ namespace Multiplayer.Fishnet.Player.Capsule
             {
                 gameObject.GetComponent<PlayerController>().enabled = false;
             }
+        }
+
+        public override void OnStopClient()
+        {
+            base.OnStopClient();
+
+            if (base.IsOwner)
+            {
+                _playerCamera.transform.SetParent(null);
+
+                _playerCamera.transform.position = _cameraPosition;
+                _playerCamera.transform.rotation = _cameraRotation;
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        public override void OnStopServer()
+        {
+            base.OnStopServer();
+
+            Cursor.lockState = CursorLockMode.None;
         }
 
         private void Awake()
@@ -52,6 +83,11 @@ namespace Multiplayer.Fishnet.Player.Capsule
 
             if (!IsClientStarted) 
                 return;
+
+            // Stop client
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                ServerManager.Kick(NetworkObject.LocalConnection, KickReason.Unset, LoggingType.Off, "");
 
             // Move
 
