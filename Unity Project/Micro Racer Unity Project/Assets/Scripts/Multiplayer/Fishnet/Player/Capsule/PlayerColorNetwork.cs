@@ -1,45 +1,48 @@
 using UnityEngine;
 using FishNet.Object;
 
-public class PlayerColorNetwork : NetworkBehaviour
+namespace Multiplayer.Fishnet.Player.Capsule
 {
-    public GameObject body;
-
-    public override void OnStartClient()
+    public class PlayerColorNetwork : NetworkBehaviour
     {
-        base.OnStartClient();
+        public GameObject body;
 
-        if (base.IsOwner)
+        public override void OnStartClient()
         {
+            base.OnStartClient();
 
-        }
-        else
-        {
-            GetComponent<PlayerColorNetwork>().enabled = false;
-        }
-    }
-
-    [ServerRpc]
-    public void ChangeColorServer(GameObject player)
-    {
-        Color color = Random.ColorHSV(0f, 1f, 1f, 1f, .5f, 1f);
-
-        ChangeColor(player, color);
-    }
-
-    [ObserversRpc]
-    public void ChangeColor(GameObject player, Color color)
-    {
-        player.GetComponent<PlayerColorNetwork>().body.GetComponent<Renderer>().material.color = color;
-    }
-
-    private void Update()
-    {
-        if (base.IsOwner)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (base.IsOwner)
             {
-                ChangeColorServer(gameObject);
+
+            }
+            else
+            {
+                GetComponent<PlayerColorNetwork>().enabled = false;
+            }
+        }
+
+        [ServerRpc]
+        public void ChangeColorServer(GameObject player)
+        {
+            Color color = Random.ColorHSV(0f, 1f, 1f, 1f, .5f, 1f);
+
+            ChangeColor(player, color);
+        }
+
+        [ObserversRpc]
+        public void ChangeColor(GameObject player, Color color)
+        {
+            player.GetComponent<PlayerColorNetwork>().body.GetComponent<Renderer>().material.color = color;
+        }
+
+        private void Update()
+        {
+            if (base.IsOwner)
+            {
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    ChangeColorServer(gameObject);
+                }
             }
         }
     }
