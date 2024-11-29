@@ -114,17 +114,5 @@ namespace Multiplayer.Fishnet.Player.Capsule
 
             transform.Rotate(Vector3.up * _mouseX);
         }
-
-        [ObserversRpc]
-        public void StopConnection()
-        {
-
-        }
-
-        [ServerRpc]
-        public void StopConnectionServer()
-        {
-
-        }
     }
 }
