@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4338237883281464115}
   - component: {fileID: 1949150609388173974}
   m_Layer: 0
-  m_Name: Mine
+  m_Name: Trap Mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
