@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TrapController : MonoBehaviour
+public class MineTrapController : MonoBehaviour
 {
     [SerializeField] bool isEnabled;
     [SerializeField] bool isTriggered;
@@ -46,11 +46,5 @@ public class TrapController : MonoBehaviour
         playerLifeAffected.MineAttack(strength, hit.point);
         yield return new WaitForSeconds(coolDown);
         isTriggered = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
