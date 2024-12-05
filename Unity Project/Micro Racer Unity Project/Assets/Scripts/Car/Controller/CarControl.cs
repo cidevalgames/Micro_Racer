@@ -5,13 +5,13 @@ namespace Car.Controller.V1
     public class CarControl : MonoBehaviour
     {
         public float motorTorque = 2000;
-        public AnimationCurve motorTorqueCurve;
+        [SerializeField] AnimationCurve motorTorqueCurve;
         public float brakeTorque = 2000;
-        public AnimationCurve brakeTorqueCurve;
+        [SerializeField] AnimationCurve brakeTorqueCurve;
         public float maxSpeed = 50;
         public float steeringRange = 30;
         public float steeringRangeAtMaxSpeed = 10;
-        public AnimationCurve steeringHelpCurve;//Not implemented yet
+        [SerializeField] AnimationCurve steeringHelpCurve;//Not implemented yet
         public GameObject centreOfGravity;
 
         public WheelControl[] wheels;
@@ -40,7 +40,7 @@ namespace Car.Controller.V1
             bool handBrake = Input.GetKey(KeyCode.Space);
             float vInput = Input.GetAxis("Vertical");
             float hInput = Input.GetAxis("Horizontal");
-            print(handBrake);
+
             // Calculate current speed in relation to the forward direction of the car
             // (this returns a negative number when traveling backwards)
             float forwardSpeed = Vector3.Dot(transform.forward, rigidBody.linearVelocity);
@@ -49,7 +49,7 @@ namespace Car.Controller.V1
             // Calculate how close the car is to top speed
             // as a number from zero to one
             float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
-            print("speedFector" + speedFactor * 100);
+
 
             // Use that to calculate how much torque is available 
             // (zero torque at top speed)
@@ -72,7 +72,7 @@ namespace Car.Controller.V1
             {
                 // Check for Wheelspin
                 wheel.CheckForSliping(Vector3.Dot(transform.forward, rigidBody.GetPointVelocity(wheel.transform.position)), slidingDifferenceTreshold);
-                print(rigidBody.GetPointVelocity(wheel.transform.position).magnitude);
+
 
                 // Apply steering to Wheel colliders that have "Steerable" enabled
                 if (wheel.steerable)
