@@ -3,6 +3,9 @@ using System.Linq;
 using FishNet.Object;
 using FishNet.Object.Prediction;
 using FishNet.Transporting;
+using Unity.Cinemachine;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -21,39 +24,43 @@ namespace Multiplayer.Fishnet.Player.Car
         public AnimationCurve steeringHelpCurve;//Not implemented yet
         public GameObject centreOfGravity;
 
-        public WheelControl[] wheels;
+        [SerializeField] private Transform visual;
+
         private Rigidbody m_rigidbody;
         [Range(0, 1.001f)]
         public float slidingDifferenceTreshold;
 
-        [Header("Multiplayer")]
-        [SerializeField] private Transform _cameraTransform;
-
         private Camera _playerCamera;
 
-        [SerializeField] private InputActionAsset _actions;
-
-        private WheelCollider[] _wheelColliders = new WheelCollider[4];
+        [Header("Wheels")]
+        [SerializeField] private Wheel[] wheels;
 
         private Vector3 _cameraPosition;
         private Quaternion _cameraRotation;
 
+        // Actions
+        private InputAction _sideMoveAction;
+        private InputAction _gasAction;
+        private InputAction _brakeAction;
+
+        // Input values
         private bool _brake = false;
         private float _horizontal;
         private float _vertical;
 
         #region Types
+
         public struct ReplicateData : IReplicateData
         {
-            public bool Brake;
             public float Horizontal;
             public float Vertical;
+            public bool Brake;
 
-            public ReplicateData(bool brake, float horizontal, float vertical) : this()
+            public ReplicateData(float horizontal, float vertical, bool brake) : this()
             {
-                Brake = brake;
                 Horizontal = horizontal;
                 Vertical = vertical;
+                Brake = brake;
             }
 
             private uint _tick;
@@ -65,19 +72,52 @@ namespace Multiplayer.Fishnet.Player.Car
 
         public struct ReconcileData : IReconcileData
         {
+            // Rigidbody
             public readonly Vector3 Position;
             public readonly Quaternion Rotation;
             public readonly Vector3 LinearVelocity;
             public readonly Vector3 AngularVelocity;
 
-            public ReconcileData(Vector3 position, Quaternion rotation, Vector3 linearVelocity, Vector3 angularVelocity) : this()
+            // Steer angles
+            public readonly float FlSteerAngle;
+            public readonly float FrSteerAngle;
+
+            // Motor torques
+            public readonly float FlMotorTorque;
+            public readonly float FrMotorTorque;
+
+            // Brake torques
+            public readonly float FlBrakeTorque;
+            public readonly float FrBrakeTorque;
+            public readonly float BlBrakeTorque;
+            public readonly float BrBrakeTorque;
+
+            public ReconcileData(Vector3 position, Quaternion rotation, Vector3 linearVelocity, Vector3 angularVelocity,
+                float flSteerAngle, float frSteerAngle,
+                float flMotorTorque, float frMotorTorque,
+                float flBrakeTorque, float frBrakeTorque, float blBrakeTorque, float brBrakeTorque) : this()
             {
                 _tick = 0;
 
+                // Rigidbody
                 Position = position;
                 Rotation = rotation;
                 LinearVelocity = linearVelocity;
                 AngularVelocity = angularVelocity;
+
+                // Steer angles
+                FlSteerAngle = flSteerAngle;
+                FrSteerAngle = frSteerAngle;
+
+                // Motor torques
+                FlMotorTorque = flMotorTorque;
+                FrMotorTorque = frMotorTorque;
+
+                // Brake torques
+                FlBrakeTorque = flBrakeTorque;
+                FrBrakeTorque = frBrakeTorque;
+                BlBrakeTorque = blBrakeTorque;
+                BrBrakeTorque = brBrakeTorque;
             }
 
             private uint _tick;
@@ -86,48 +126,14 @@ namespace Multiplayer.Fishnet.Player.Car
             public void SetTick(uint value) => _tick = value;
         }
 
-        //public struct ReconcileData : IReconcileData
-        //{
-        //    [Header("Wheel collider")]
-        //    public readonly float BrakeTorque;
-        //    public readonly float MotorTorque;
-        //    public readonly float SteerAngle;
-
-        //    [Header("Rigidbody")]
-        //    public readonly Vector3 Position;
-        //    public readonly Quaternion Rotation;
-        //    public readonly Vector3 LinearVelocity;
-        //    public readonly Vector3 AngularVelocity;
-
-        //    public ReconcileData(float brakeTorque, float motorTorque, float steerAngle, 
-        //        Vector3 position, Quaternion rotation, Vector3 linearVelocity, Vector3 angularVelocity) : this()
-        //    {
-        //        _tick = 0;
-
-        //        BrakeTorque = brakeTorque;
-        //        MotorTorque = motorTorque;
-        //        SteerAngle = steerAngle;
-
-        //        Position = position;
-        //        Rotation = rotation;
-        //        LinearVelocity = linearVelocity;
-        //        AngularVelocity = angularVelocity;
-        //    }
-
-        //    private uint _tick;
-        //    public void Dispose() { }
-        //    public uint GetTick() => _tick;
-        //    public void SetTick(uint value) => _tick = value;
-        //}
         #endregion
 
         #region Network Events
 
         #region Network
+
         public override void OnStartNetwork()
         {
-            _wheelColliders = GetComponentsInChildren<WheelCollider>();
-            
             m_rigidbody = GetComponent<Rigidbody>();
 
             _playerCamera = Camera.main;
@@ -141,30 +147,35 @@ namespace Multiplayer.Fishnet.Player.Car
             TimeManager.OnTick -= TimeManagerTickEventHandler;
             TimeManager.OnPostTick -= TimeManagerPostTickEventHandler;
         }
+
         #endregion
 
         #region Client
+
         public override void OnStartClient()
         {
             base.OnStartClient();
 
             if (base.IsOwner)
             {
-                _cameraPosition = _playerCamera.transform.position;
-                _cameraRotation = _playerCamera.transform.rotation;
+                // Assign the car to the camera follow
 
-                _playerCamera.transform.SetParent(_cameraTransform);
-                _playerCamera.transform.position = _cameraTransform.position;
-                _playerCamera.transform.rotation = _cameraTransform.rotation;
+                var cameraFollow = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineCamera>();
 
-                // Find all child gameobjects that have the wheelcontrol script attached
-                wheels = GetComponentsInChildren<WheelControl>();
+                CameraTarget newTarget = new CameraTarget();
+                newTarget.TrackingTarget = visual;
+                newTarget.LookAtTarget = visual;
+                newTarget.CustomLookAtTarget = true;
 
-                //Debug.Log(wheels.Length);
-            }
-            else
-            {
-                GetComponent<CarControl>().enabled = false;
+                cameraFollow.Target = newTarget;
+
+                // Get all actions
+
+                InputActionMap playerActionMap = InputSystem.actions.FindActionMap("Player", true);
+
+                _sideMoveAction = playerActionMap.FindAction("Side Move", true);
+                _gasAction = playerActionMap.FindAction("Gas", true);
+                _brakeAction = playerActionMap.FindAction("Brake", true);
             }
         }
 
@@ -174,20 +185,27 @@ namespace Multiplayer.Fishnet.Player.Car
 
             if (base.IsOwner)
             {
-                _playerCamera.transform.SetParent(null);
+                var cameraFollow = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineCamera>();
+
+                cameraFollow.Target.TrackingTarget = null;
+                cameraFollow.Target.LookAtTarget = null;
+
                 _playerCamera.transform.position = _cameraPosition;
                 _playerCamera.transform.rotation = _cameraRotation;
             }
         }
+
         #endregion
 
         #endregion
 
         private void TimeManagerTickEventHandler()
         {
-            if (IsOwner)
+            if (base.IsOwner)
             {
-                ReplicateData replicateData = new ReplicateData(_brake, _horizontal, _vertical);
+                //Reconcile(default);
+
+                ReplicateData replicateData = new ReplicateData(_horizontal, _vertical, _brake);
 
                 Replicate(replicateData);
             }
@@ -202,21 +220,20 @@ namespace Multiplayer.Fishnet.Player.Car
             if (!IsServerStarted)
                 return;
 
-            foreach (var wheelCollider in _wheelColliders)
-            {
-                CreateReconcile();
-            }
+            CreateReconcile();
         }
 
         [Replicate]
-        private void Replicate(ReplicateData replicateData, 
+        private void Replicate(ReplicateData rd, 
             ReplicateState replicateState = ReplicateState.Invalid, 
             Channel channel = Channel.Unreliable)
         {
             //m_rigidbody.linearVelocity += Vector3.forward * Time.deltaTime;
 
-            float hInput = replicateData.Horizontal;
-            float vInput = replicateData.Vertical;
+            float hInput = rd.Horizontal;
+            float vInput = rd.Vertical;
+
+            //Debug.Log($"Horizontal: {hInput}, Vertical: {vInput}");
 
             // Calculate current speed in relation to the forward direction of the car
             // (this returns a negative number when traveling backwards)
@@ -245,72 +262,128 @@ namespace Multiplayer.Fishnet.Player.Car
             // as the car's velocity
             bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
 
-            foreach (var wheel in wheels)
+            CheckForSlipping();
+
+            foreach (var w in wheels)
             {
                 // Check for Wheelspin
-                wheel.CheckForSliping(Vector3.Dot(transform.forward, m_rigidbody.GetPointVelocity(wheel.transform.position)), slidingDifferenceTreshold);
                 //print(m_rigidBody.GetPointVelocity(wheel.transform.position).magnitude);
 
                 // Apply steering to Wheel colliders that have "Steerable" enabled
-                if (wheel.steerable)
+                if (w.steerable)
                 {
-                    wheel.wheelCollider.steerAngle = hInput * currentSteerRange;
+                    w.wheelCollider.steerAngle = hInput * currentSteerRange;
+
+                    Debug.Log($"{w.mesh.name} Steer angle: {w.wheelCollider.steerAngle}");
                 }
 
-                if (replicateData.Brake)
+                if (rd.Brake)
                 {
-                    wheel.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
-                    wheel.wheelCollider.motorTorque = 0;
+                    w.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
+                    w.wheelCollider.motorTorque = 0;
                 }
                 else
                 {
                     if (isAccelerating)
                     {
                         // Apply torque to Wheel colliders that have "Motorized" enabled
-                        if (wheel.motorized)
+                        if (w.motorized)
                         {
-                            wheel.wheelCollider.motorTorque = vInput * currentMotorTorque;
+                            w.wheelCollider.motorTorque = vInput * currentMotorTorque;
                         }
 
-                        wheel.wheelCollider.brakeTorque = 0;
+                        w.wheelCollider.brakeTorque = 0;
                     }
                     else
                     {
                         // If the user is trying to go in the opposite direction
                         // apply brakes to all wheels
-                        wheel.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
-                        wheel.wheelCollider.motorTorque = 0;
+                        w.wheelCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
+                        w.wheelCollider.motorTorque = 0;
                     }
                 }
             }
+
+            HandleWheelTransform();
         }
 
         public override void CreateReconcile()
         {
-            ReconcileData reconcileData = new ReconcileData(
+            ReconcileData rd = new ReconcileData(
                     m_rigidbody.position,
                     m_rigidbody.rotation,
                     m_rigidbody.linearVelocity,
-                    m_rigidbody.angularVelocity
+                    m_rigidbody.angularVelocity,
+
+                    wheels[0].wheelCollider.steerAngle, wheels[1].wheelCollider.steerAngle,
+                    wheels[0].wheelCollider.motorTorque, wheels[1].wheelCollider.motorTorque,
+                    wheels[0].wheelCollider.brakeTorque, wheels[1].wheelCollider.brakeTorque, wheels[2].wheelCollider.brakeTorque, wheels[3].wheelCollider.brakeTorque
                     );
 
-            Reconcile(reconcileData);
+            Reconcile(rd);
         }
 
         [Reconcile]
-        private void Reconcile(ReconcileData reconcileData, Channel channel = Channel.Unreliable)
+        private void Reconcile(ReconcileData rd, Channel channel = Channel.Unreliable)
         {
-            //WheelCollider wheelCollider = _wheelColliders[_currentWheelIndex];
+            // Set Rigidbody
+            transform.position = rd.Position;
+            transform.rotation = rd.Rotation;
+            m_rigidbody.linearVelocity = rd.LinearVelocity;
+            m_rigidbody.angularVelocity = rd.AngularVelocity;
 
-            //wheelCollider.brakeTorque = reconcileData.BrakeTorque;
-            //wheelCollider.motorTorque = reconcileData.MotorTorque;
-            //wheelCollider.steerAngle = reconcileData.SteerAngle;
-
-            m_rigidbody.Move(reconcileData.Position, reconcileData.Rotation);
-            m_rigidbody.linearVelocity = reconcileData.LinearVelocity;
-            m_rigidbody.angularVelocity = reconcileData.AngularVelocity;
+            // Set WheelColliders
+            wheels[0].wheelCollider.steerAngle = rd.FlSteerAngle;
+            wheels[1].wheelCollider.steerAngle = rd.FrSteerAngle;
+            wheels[0].wheelCollider.motorTorque = rd.FlMotorTorque;
+            wheels[1].wheelCollider.motorTorque = rd.FrMotorTorque;
+            wheels[0].wheelCollider.brakeTorque = rd.FlBrakeTorque;
+            wheels[1].wheelCollider.brakeTorque = rd.FrBrakeTorque;
+            wheels[2].wheelCollider.brakeTorque = rd.BlBrakeTorque;
+            wheels[3].wheelCollider.brakeTorque = rd.BrBrakeTorque;
         }
 
+        private void HandleWheelTransform()
+        {
+            foreach (Wheel w in wheels)
+            {
+                Vector3 pos = w.mesh.position;
+                Quaternion rot = w.mesh.rotation;
+
+                w.wheelCollider.GetWorldPose(out pos, out rot);
+
+                //pos = w.wheelCollider.transform.position;
+                pos = pos - w.wheelCollider.transform.parent.position + w.mesh.parent.position;
+
+                w.mesh.position = pos;
+                w.mesh.rotation = rot;
+            }
+        }
+
+        private void CheckForSlipping()
+        {
+            float x = slidingDifferenceTreshold;
+
+            foreach (Wheel w in wheels)
+            {
+                WheelCollider wheelCollider = w.wheelCollider;
+
+                float carVelocity = Vector3.Dot(transform.forward, m_rigidbody.GetPointVelocity(wheelCollider.transform.position));
+
+                float distanceTraveledByTheWheel = math.abs((wheelCollider.radius * 2 * math.PI) * (wheelCollider.rpm / 60));
+
+                bool isSliding = distanceTraveledByTheWheel > carVelocity + x || distanceTraveledByTheWheel < carVelocity - x;
+
+                if (isSliding)
+                {
+                    w.trailRenderer.emitting = true;
+                }
+                else
+                {
+                    w.trailRenderer.emitting = false;
+                }
+            }            
+        }
 
         //void SetupCenterOfMass()
         //{
@@ -323,10 +396,10 @@ namespace Multiplayer.Fishnet.Player.Car
             if (!base.IsOwner) 
                 return;
 
-            _brake = _actions.FindAction("Brake").IsPressed();
+            _brake = _brakeAction.IsPressed();
 
-            _horizontal = _actions.FindAction("Side Move").ReadValue<float>();
-            _vertical = _actions.FindAction("Gas").ReadValue<float>();
+            _horizontal = _sideMoveAction.ReadValue<float>();
+            _vertical = _gasAction.ReadValue<float>();
         }
     }
 }
