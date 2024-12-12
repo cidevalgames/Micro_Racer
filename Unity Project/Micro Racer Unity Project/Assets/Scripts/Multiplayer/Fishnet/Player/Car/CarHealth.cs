@@ -2,7 +2,9 @@
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Multiplayer.Fishnet.Player.Car
 {
@@ -14,9 +16,13 @@ namespace Multiplayer.Fishnet.Player.Car
         [SerializeField] private bool setMaxHealth = true;
         
         [AllowMutableSyncType]
-        private SyncVar<int> _health = new SyncVar<int>();
+        private SyncVar<float> _health = new SyncVar<float>();
 
         [SerializeField] private int maxHealth = 100;
+
+        [Header("UI")]
+        [SerializeField] private Slider healthBar;
+        [SerializeField] private TextMeshProUGUI healthPercentage;
 
         private Rigidbody m_rigidbody;
 
@@ -54,27 +60,39 @@ namespace Multiplayer.Fishnet.Player.Car
             {
                 //Debug.Log($"Rigidbody velocity: {GetComponent<Rigidbody>().linearVelocity.magnitude}");
 
-                float impactForce = GetImpactForce(GetComponent<Rigidbody>());
+                float impactForce = GetImpactForce(GetComponent<CarHealth>().GetComponent<Rigidbody>());
 
-                Debug.Log(impactForce);
+                //Debug.Log(impactForce);
 
                 if (impactForce > impactThreshold)
                 {
-                    float value = Mathf.InverseLerp(impactThreshold, impactMaxForce, impactForce);
+                    float value = Mathf.InverseLerp(this.impactThreshold, this.impactMaxForce, impactForce);
 
                     //Debug.Log(value);
 
-                    UpdateHealth(this, -(int)(maxHealth * value));
+                    UpdateHealth(this, -(maxHealth * value));
+                    UpdateHealthBar(this);
                 }
             }
         }
 
         [ServerRpc]
-        public void UpdateHealth(CarHealth script, int amountToChange)
+        public void UpdateHealth(CarHealth script, float amountToChange)
         {
             script._health.Value += amountToChange;
 
             Debug.Log($"Player {base.Owner.ClientId}'s health value is {script._health.Value}");
+        }
+
+        [ObserversRpc]
+        private void UpdateHealthBar(CarHealth script)
+        {
+            float amount = Mathf.InverseLerp(0, maxHealth, script._health.Value);
+            amount = Mathf.Round(amount * 1000.0f) * 0.001f;
+
+            script.healthBar.value = amount;
+
+            script.healthPercentage.text = $"{(amount * 100).ToString("00.0")} %";
         }
 
         #region Calculations

@@ -100,7 +100,7 @@ namespace FishNet.Example
                     return "Invalid";
             }
 
-            GUILayout.BeginArea(new Rect(4, 110, 256, 9000));
+            GUILayout.BeginArea(new Rect(1700, 150, 256, 9000));
             Vector2 defaultResolution = new Vector2(1920f, 1080f);
             GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(Screen.width / defaultResolution.x, Screen.height / defaultResolution.y, 1));
 
