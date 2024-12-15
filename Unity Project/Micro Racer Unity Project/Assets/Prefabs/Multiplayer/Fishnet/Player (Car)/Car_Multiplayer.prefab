@@ -5036,7 +5036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6700254520642614637}
-  - component: {fileID: 6305152832374471130}
+  - component: {fileID: 3083176380981752142}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -5059,8 +5059,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8429018648472345605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &6305152832374471130
-MeshCollider:
+--- !u!65 &3083176380981752142
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5072,15 +5072,14 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3354358733795503696, guid: 67cc45dda15375e4888e52bddff60955, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 2.2491, y: 1.1818299, z: 3.7814965}
+  m_Center: {x: -0.000000834465, y: 1.0877726, z: 0.09951568}
 --- !u!1 &1465906662475255516
 GameObject:
   m_ObjectHideFlags: 0
@@ -10188,7 +10187,7 @@ GameObject:
   - component: {fileID: 7980663947639176993}
   - component: {fileID: -6701998930604312732}
   - component: {fileID: 5291912312621348842}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Car_Multiplayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10260,12 +10259,6 @@ MonoBehaviour:
   <PredictedOwner>k__BackingField: {fileID: 0}
   NetworkBehaviours:
   - {fileID: 5291912312621348842}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -10392,6 +10385,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   centreOfGravity: {fileID: 3352280612052914142}
+  antiRoll: 3500
   visual: {fileID: 8739805115047414553}
   slidingDifferenceTreshold: 0
   wheels:
@@ -10415,6 +10409,9 @@ MonoBehaviour:
     trailRenderer: {fileID: 3760806836948279119}
     steerable: 0
     motorized: 1
+  printInput: 0
+  printSteerAngle: 0
+  printWheelMeshesTransform: 0
 --- !u!1 &3352280612052914142
 GameObject:
   m_ObjectHideFlags: 0
@@ -10621,7 +10618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1436184380702824464
 Transform:
   m_ObjectHideFlags: 0
