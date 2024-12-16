@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3968043487039455882}
   - component: {fileID: 7680288668266012438}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Runner button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -739,7 +739,7 @@ GameObject:
   - component: {fileID: 4948623923116250137}
   - component: {fileID: 7351610088296296529}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Bunnies button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

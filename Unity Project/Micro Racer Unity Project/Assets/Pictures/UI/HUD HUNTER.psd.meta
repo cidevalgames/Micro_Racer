@@ -404,6 +404,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: HUD HUNTER_14
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 512
+        width: 1554
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3a6ec658fcc1cc468d5c6a050185b3a
+      internalID: 964463804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -424,6 +446,7 @@ TextureImporter:
       HUD HUNTER_11: -214421799
       HUD HUNTER_12: 151239559
       HUD HUNTER_13: -413885208
+      HUD HUNTER_14: 964463804
       HUD HUNTER_2: -1339821492
       HUD HUNTER_3: -1167746587
       HUD HUNTER_4: -316198734
