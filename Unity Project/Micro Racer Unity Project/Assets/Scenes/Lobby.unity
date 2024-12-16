@@ -598,17 +598,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9009257818405500708, guid: 6bf540bf99cb2ff498987972412a2558, type: 3}
   m_PrefabInstance: {fileID: 1042962186}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1042962190 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8743045937429006493, guid: 6bf540bf99cb2ff498987972412a2558, type: 3}
-  m_PrefabInstance: {fileID: 1042962186}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5045cc11f4d64494d9d1391417176b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1077035513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1145,6 +1134,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470991513}
   m_CullTransparentMesh: 1
+--- !u!114 &1505755147 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8743045937429006493, guid: 6bf540bf99cb2ff498987972412a2558, type: 3}
+  m_PrefabInstance: {fileID: 1042962186}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5045cc11f4d64494d9d1391417176b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1569255436 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7443408887813606051, guid: 0b650fca685f2eb41a86538aa883e4c1, type: 3}
@@ -1253,7 +1253,7 @@ MonoBehaviour:
   autoInitialize: 1
   views:
   - {fileID: 1281179157}
-  - {fileID: 1042962190}
+  - {fileID: 1505755147}
   - {fileID: 2069151875}
   defaultView: {fileID: 1281179157}
 --- !u!1 &1658896594
@@ -1718,6 +1718,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 701701556576360864, guid: 8f9ccfcef5cb8b24794c3dde30bc41cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 701701556576360864, guid: 8f9ccfcef5cb8b24794c3dde30bc41cd, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1743,6 +1747,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6511636364443504387, guid: 8f9ccfcef5cb8b24794c3dde30bc41cd, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511636364443504387, guid: 8f9ccfcef5cb8b24794c3dde30bc41cd, type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6511636364443504387, guid: 8f9ccfcef5cb8b24794c3dde30bc41cd, type: 3}

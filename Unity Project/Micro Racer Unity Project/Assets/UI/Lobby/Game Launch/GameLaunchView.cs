@@ -1,4 +1,6 @@
+using System.Collections;
 using FishNet;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,10 +15,19 @@ public class GameLaunchView : View
             if (InstanceFinder.ClientManager.Clients.Count < 2)
                 return;
 
-            BootstrapSceneManager.Instance.LoadScene("MainScene");
-            BootstrapSceneManager.Instance.UnloadScene("Lobby");
+            StartCoroutine(OnLaunchGame());            
         });
 
         base.Initialize();
+    }
+
+    private IEnumerator OnLaunchGame()
+    {
+        BootstrapSceneManager.Instance.LoadScene("MainScene");
+        BootstrapSceneManager.Instance.UnloadScene("Lobby");
+
+        yield return new WaitForSeconds(1f);
+
+        FindAnyObjectByType<RoleSelection>(FindObjectsInactive.Exclude).SpawnPlayer();
     }
 }

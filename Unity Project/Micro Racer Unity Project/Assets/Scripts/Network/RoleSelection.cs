@@ -37,6 +37,22 @@ namespace Network
 
         #region Spawn
 
+        [ContextMenu("Spawn player")]
+        public void SpawnPlayer()
+        {
+            switch (m_playerRole)
+            {
+                case PlayerRole.Hunter:
+                    SpawnHunter(); 
+                    break;
+                case PlayerRole.Bunny:
+                    SpawnBunny();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         /// <summary>
         /// Use this function to spawn a hunter.
         /// </summary>
