@@ -210,10 +210,10 @@ TextureImporter:
       name: HUD HUNTER_6
       rect:
         serializedVersion: 2
-        x: 2065
-        y: 257
-        width: 158
-        height: 175
+        x: 2062
+        y: 254
+        width: 187
+        height: 178
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,28 +224,6 @@ TextureImporter:
       bones: []
       spriteID: f26fc1f92696be844b7727e92480aa09
       internalID: -156384601
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HUD HUNTER_7
-      rect:
-        serializedVersion: 2
-        x: 2185
-        y: 319
-        width: 61
-        height: 84
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6e48564e4ecf0c8479fd396cfd9357d2
-      internalID: -254136050
       vertices: []
       indices: 
       edges: []
@@ -320,10 +298,10 @@ TextureImporter:
       name: HUD HUNTER_11
       rect:
         serializedVersion: 2
-        x: 2065
-        y: 51
-        width: 123
-        height: 162
+        x: 2034
+        y: 44
+        width: 187
+        height: 178
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -342,7 +320,7 @@ TextureImporter:
       name: HUD HUNTER_12
       rect:
         serializedVersion: 2
-        x: 16
+        x: 14
         y: 18
         width: 493
         height: 75
@@ -356,6 +334,72 @@ TextureImporter:
       bones: []
       spriteID: e1f1c9149706547498fab79e5359c7c3
       internalID: 151239559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HUD HUNTER_2
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 863
+        width: 848
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7429752097dc0d14faac184d32249797
+      internalID: -1339821492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HUD HUNTER_13
+      rect:
+        serializedVersion: 2
+        x: 2221
+        y: 552
+        width: 1429
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef5aea9e874035f4ba3907261a8dd5fd
+      internalID: -413885208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HUD HUNTER_7
+      rect:
+        serializedVersion: 2
+        x: 2482
+        y: 142
+        width: 1429
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af56aa07bc6e0da41a28694f989111d3
+      internalID: -254136050
       vertices: []
       indices: 
       edges: []
@@ -379,6 +423,7 @@ TextureImporter:
       HUD HUNTER_10: 220510389
       HUD HUNTER_11: -214421799
       HUD HUNTER_12: 151239559
+      HUD HUNTER_13: -413885208
       HUD HUNTER_2: -1339821492
       HUD HUNTER_3: -1167746587
       HUD HUNTER_4: -316198734
