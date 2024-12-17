@@ -6,10 +6,10 @@ namespace Car.Multiplayer.Bunny
 {
     public class BunnyHealth : CarHealth
     {
-        [ObserversRpc]
-        public override void UpdateHealthBar(CarHealth script)
-        {
-            base.UpdateHealthBar(script);
-        }
+        //[ObserversRpc]
+        //public override void UpdateHealthBar(CarHealth script)
+        //{
+        //    base.UpdateHealthBar(script);
+        //}
     }
 }
