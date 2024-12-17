@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6941049616890628997}
+  - component: {fileID: 7822895863764166068}
+  - component: {fileID: 4610650630408384152}
   m_Layer: 0
   m_Name: Checkpoint
   m_TagString: Untagged
@@ -33,6 +35,39 @@ Transform:
   - {fileID: 3199954853403803581}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7822895863764166068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794172490940477020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f693704d56ff942bed7f24f32abb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &4610650630408384152
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794172490940477020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.36, y: 3, z: 0.1}
+  m_Center: {x: 0, y: 1.71, z: 0}
 --- !u!1 &5163669286789816715
 GameObject:
   m_ObjectHideFlags: 0
