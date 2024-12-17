@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CheckpointsManager : MonoBehaviour
 {
@@ -16,14 +18,19 @@ public class CheckpointsManager : MonoBehaviour
         {
             if (value >= maxCheckpoints)
             {
-                // DO SMTH
+                Debug.Log("Bunny wins!");
             }
                 
             _checkpointsNumber = Mathf.Clamp(value, 0, maxCheckpoints);
+            UpdateUI();
         }
     }
 
     [SerializeField] private int maxCheckpoints;
+
+    [Header("UI")]
+    [SerializeField] private Image[] fills;
+    [SerializeField] private TextMeshProUGUI checkpointsText;
 
     private Checkpoint[] _checkpoints;
 
@@ -38,10 +45,21 @@ public class CheckpointsManager : MonoBehaviour
     private void Start()
     {
         maxCheckpoints = _checkpoints.Length;
+        UpdateUI();
     }
 
     public void OnCheckpoint()
     {
         CheckpointsNumber++;
+    }
+
+    private void UpdateUI()
+    {
+        checkpointsText.text = $"Checkpoints {CheckpointsNumber}/{maxCheckpoints}";
+
+        foreach (Image img in fills)
+        {
+            img.fillAmount = Mathf.InverseLerp(0, maxCheckpoints, CheckpointsNumber);
+        }
     }
 }
