@@ -29,6 +29,7 @@ namespace Car.Controller.V1
             wheelCollider = GetComponent<WheelCollider>();
             savedParameters.x = wheelCollider.sidewaysFriction.stiffness;
             savedParameters.y = wheelCollider.forwardFriction.stiffness;
+
         }
 
         // Update is called once per frame
@@ -58,23 +59,6 @@ namespace Car.Controller.V1
             }
         }
 
-        public IEnumerator Oiled(float Time,Vector2 stiffnessValuesWhenOiled)
-        {
-            oiled = true;
-            var modifiedParameters = wheelCollider.sidewaysFriction;    //je set
-            modifiedParameters.stiffness = stiffnessValuesWhenOiled.x;  //je modifie
-            wheelCollider.sidewaysFriction = modifiedParameters;        //j'applique
-            modifiedParameters = wheelCollider.forwardFriction;         //je set
-            modifiedParameters.stiffness = stiffnessValuesWhenOiled.y;  //je modifieqqqqqq
-            wheelCollider.forwardFriction = modifiedParameters;         //j'applique
-            yield return new WaitForSeconds(Time);
-            modifiedParameters = wheelCollider.sidewaysFriction;        //je set
-            modifiedParameters.stiffness = savedParameters.x;           //je modifie
-            wheelCollider.sidewaysFriction = modifiedParameters;        //j'applique
-            modifiedParameters = wheelCollider.forwardFriction;         //je set
-            modifiedParameters.stiffness = savedParameters.y;           //je modifie
-            wheelCollider.forwardFriction = modifiedParameters;         //j'applique
-            oiled = false;
-        }
+
     }
 }

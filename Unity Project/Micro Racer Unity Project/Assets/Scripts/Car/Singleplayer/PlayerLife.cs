@@ -1,19 +1,25 @@
+using Car.Multiplayer.Common;
 using UnityEngine;
 
 public class PlayerLife : MonoBehaviour
 {
-    Rigidbody body;
-    public float maxPV;
-    public float currentPV;
+    public Rigidbody m_rigidbody;
+    public CarControl m_carControl;
+    float maxPV;
+    float currentPV;
 
     void Start()
     {
-        body = GetComponent<Rigidbody>();
+        if (m_rigidbody == null)
+            m_rigidbody = GetComponent<Rigidbody>();
+
         currentPV = maxPV;
     }
+
     public void MineAttack(float strength, Vector3 pointOfImpact)
     {
-        body.AddForceAtPosition(strength * Vector3.up, pointOfImpact, ForceMode.Impulse);
+        m_rigidbody.AddForce(strength * Vector3.up, ForceMode.Impulse);
+        //transform.InverseTransformDirection(pointOfImpact);
     }
 }
 

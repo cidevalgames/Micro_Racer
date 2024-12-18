@@ -1,50 +1,50 @@
 using System.Collections;
+using Car.Multiplayer.Common;
 using UnityEngine;
 
-public class MineTrapController : MonoBehaviour
+namespace Traps
 {
-    [SerializeField] bool isEnabled;
-    [SerializeField] bool isTriggered;
-    [SerializeField] float strength;
-    [Header("Timers")]
-    [SerializeField] float fuseTime;
-    [SerializeField] float coolDown;
-    [Header("Refs")]
-    [SerializeField] PlayerLife playerLifeAffected;
-    [SerializeField] ParticleSystem particles;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class MineTrapController : Trap
     {
-        if (particles == null)
-            particles = gameObject.GetComponentInChildren<ParticleSystem>();
-        isTriggered = false;
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        //print(other.name + " has entered");
-        if (isEnabled)
-        {
-            //print("is enabled");
-            if (other.CompareTag("Player") && !isTriggered)
-            {
-                //print("tag is good");
-                isTriggered = true;
-                playerLifeAffected = other.GetComponent<PlayerLife>();
-                StartCoroutine(MineTriggered(fuseTime));
-                return;
+        [SerializeField] float strength = 15000f;
+    
+        [Header("Timers")]
+        [SerializeField] float fuseTime;
+        [SerializeField] float timeBeforeAttack;
+    
+        [Header("Refs")]
+        [SerializeField] PlayerLife playerLifeAffected;
+        [SerializeField] ParticleSystem particles;
 
-            }
-            //print("heuuuuu.........j'espère que c'etait pas la voiture parceque la je viens de la laisser passer");
+        public override void Start()
+        {
+            base.Start();
+
+            if (particles == null)
+                particles = gameObject.GetComponentInChildren<ParticleSystem>();
         }
-    }
-    IEnumerator MineTriggered(float fuseTime)
-    {
-        RaycastHit hit = new();
-        yield return new WaitForSeconds(fuseTime);
-        Physics.Raycast(transform.position, gameObject.transform.up, out hit, 0.3f);
-        particles.Play();
-        playerLifeAffected.MineAttack(strength, hit.point);
-        yield return new WaitForSeconds(coolDown);
-        isTriggered = false;
+
+        public override void OnTriggerStay(Collider other)
+        {
+            base.OnTriggerStay(other);
+
+            playerLifeAffected = other.GetComponent<PlayerLife>();
+
+            StartCoroutine(OnTriggerCoroutine());
+        }
+
+        public override IEnumerator OnTriggerCoroutine(CarControl target = null)
+        {
+            yield return new WaitForSeconds(fuseTime);
+
+            Physics.Raycast(transform.position, gameObject.transform.up, out RaycastHit hit, 0.3f);
+            particles.Play();
+
+            playerLifeAffected.MineAttack(strength, hit.point);
+
+            yield return new WaitForSeconds(timeBeforeAttack);
+
+            base.OnTriggerCoroutine(target);
+        }
     }
 }

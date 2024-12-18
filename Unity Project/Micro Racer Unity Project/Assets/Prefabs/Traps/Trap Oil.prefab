@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 6.416166}
+  m_Center: {x: 0, y: -4.6591407e-16, z: -2.7080872}
 --- !u!114 &5659163709247343337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,9 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnabled: 1
-  oilTime: 3
-  tireStiffnessAfterBeingOiled: {x: 0.2, y: 0.2}
-  activeTime: 5
+  timeOiled: 3
+  activeTime: 100
   timeUntilDeath: 0
-  wheelControlAffected: {fileID: 0}
-  particles: {fileID: 0}
