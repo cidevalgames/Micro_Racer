@@ -1,56 +1,62 @@
-using Car.Controller.V1;
-using DG.Tweening;
+using Car.Multiplayer.Common;
+using System.Collections;
 using UnityEngine;
 
-public class OilTrapController : MonoBehaviour
+namespace Traps
 {
-    [SerializeField] bool isEnabled;
-    [SerializeField] float oilTime;
-    [Tooltip("X = Sideways slip & Y = Forward slip")]
-    [SerializeField] Vector2 tireStiffnessAfterBeingOiled;
-    [Header("Timers")]
-    [SerializeField] float activeTime;
-    public float timeUntilDeath;
-    [Header("Refs")]
-    [SerializeField] WheelControl wheelControlAffected;
-    [SerializeField] ParticleSystem particles;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class OilTrapController : Trap
     {
-        timeUntilDeath = activeTime;
-        if (particles == null)
-            particles = gameObject.GetComponentInChildren<ParticleSystem>();
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        print(other.name + " has entered");
-        if (isEnabled)
+        [SerializeField] float timeOiled;
+
+        [Header("Timers")]
+        [SerializeField] float activeTime;
+        [SerializeField] float timeUntilDeath;
+
+        private float cooldown = 0f;
+
+        public override void Start()
         {
-            print("is enabled");
-            if (other.GetComponent<WheelControl>())
-            {
-                wheelControlAffected = other.GetComponent<WheelControl>();
-                print("tag is good");
-                StartCoroutine(wheelControlAffected.Oiled(oilTime, tireStiffnessAfterBeingOiled));
-                return;
-            }
-            print("heuuuuu.........j'espère que c'etait pas la voiture parceque la je viens de la laisser passer");
+            base.Start();
+
+            timeUntilDeath = activeTime;
         }
-    }
-    private void Update()
-    {
-        if (isEnabled)
+
+        public override void Update()
         {
-            if (timeUntilDeath > 0)
+            base.Update();
+
+            if (cooldown < timeUntilDeath)
             {
-                timeUntilDeath -= Time.deltaTime;
+                cooldown += Time.deltaTime;
             }
             else
             {
+                if (cooldown > timeUntilDeath + 2)
+                    Destroy(this);
+
                 isEnabled = false;
-                transform.DOMoveY(transform.position.y - 0.5f, 0.5f);
-                //TODO trouver un moyen de faire disparaitre la mine sans que ce soit trop cher !!!
+                transform.position += Vector3.down * Time.deltaTime;
             }
+        }
+
+        public override void OnTriggerStay(Collider other)
+        {
+            base.OnTriggerStay(other);
+        
+            CarControl target = other.GetComponentInParent<CarControl>();
+
+            StartCoroutine(OnTriggerCoroutine(target));
+        }
+
+        public override IEnumerator OnTriggerCoroutine(CarControl target)
+        {
+            target.oiled = true;
+
+            yield return new WaitForSeconds(timeOiled);
+
+            target.oiled = false;
+
+            base.OnTriggerCoroutine(target);
         }
     }
 }

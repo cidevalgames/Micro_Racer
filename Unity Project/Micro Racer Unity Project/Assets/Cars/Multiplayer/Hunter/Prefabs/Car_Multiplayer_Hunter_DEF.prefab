@@ -4975,7 +4975,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -5039,7 +5039,7 @@ GameObject:
   - component: {fileID: 3083176380981752142}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Hunter
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5078,7 +5078,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.2491, y: 1.2143335, z: 4.649729}
+  m_Size: {x: 2.617601, y: 1.2401352, z: 4.7485237}
   m_Center: {x: -0.000000834465, y: 1.0715208, z: -0.12938118}
 --- !u!1 &844083203808978622
 GameObject:
@@ -10514,7 +10514,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -10579,6 +10579,7 @@ GameObject:
   - component: {fileID: -6701998930604312732}
   - component: {fileID: 5291912312621348842}
   - component: {fileID: 4462299725378942231}
+  - component: {fileID: 2588397846071598538}
   m_Layer: 6
   m_Name: Car_Multiplayer_Hunter_DEF
   m_TagString: Untagged
@@ -10617,7 +10618,7 @@ Rigidbody:
   m_GameObject: {fileID: 2966203376167469138}
   serializedVersion: 4
   m_Mass: 1100
-  m_Drag: 0
+  m_Drag: 0.05
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -10653,7 +10654,7 @@ MonoBehaviour:
   <PredictedOwner>k__BackingField: {fileID: 0}
   NetworkBehaviours:
   - {fileID: 5291912312621348842}
-  - {fileID: 0}
+  - {fileID: 4462299725378942231}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -10679,7 +10680,7 @@ MonoBehaviour:
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 4
+  <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9487043194648664463
   <SceneId>k__BackingField: 0
@@ -10707,10 +10708,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0015449524
-      value: 0.115753174
-      inSlope: 53.579617
-      outSlope: 53.579617
+      time: -0.0023994446
+      value: 0.32559204
+      inSlope: 19.99916
+      outSlope: 19.99916
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
@@ -10789,24 +10790,29 @@ MonoBehaviour:
     trailRenderer: {fileID: 5573413871606140501}
     steerable: 1
     motorized: 0
+    savedParameters: {x: 0, y: 0}
   - wheelCollider: {fileID: 5109231116414073769}
     mesh: {fileID: 1631503765915259505}
     trailRenderer: {fileID: 3755116687983130823}
     steerable: 1
     motorized: 0
+    savedParameters: {x: 0, y: 0}
   - wheelCollider: {fileID: 2211004482437325248}
     mesh: {fileID: 8762180797371082677}
     trailRenderer: {fileID: 3760806836948279119}
     steerable: 0
     motorized: 1
+    savedParameters: {x: 0, y: 0}
   - wheelCollider: {fileID: 3371601641992737695}
     mesh: {fileID: 651307548161281608}
     trailRenderer: {fileID: 807089305961003806}
     steerable: 0
     motorized: 1
+    savedParameters: {x: 0, y: 0}
   printInput: 0
   printSteerAngle: 0
   printWheelMeshesTransform: 0
+  oiled: 0
 --- !u!114 &4462299725378942231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10819,9 +10825,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19e69c4b9d57b643b7002d73b50737a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: -6701998930604312732}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: -6701998930604312732}
   impactThreshold: 500
   impactMaxForce: 150000
   collidableLayers:
@@ -10836,6 +10842,22 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   healthPercentage: {fileID: 0}
   printHealth: 0
+--- !u!138 &2588397846071598538
+FixedJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2966203376167469138}
+  serializedVersion: 1
+  m_ConnectedBody: {fileID: 7457783929880581788}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &3352280612052914142
 GameObject:
   m_ObjectHideFlags: 0
@@ -10861,7 +10883,7 @@ Transform:
   m_GameObject: {fileID: 3352280612052914142}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.668}
+  m_LocalPosition: {x: 0, y: 0, z: 0.621}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11195,7 +11217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1436184380702824464
 Transform:
   m_ObjectHideFlags: 0
@@ -11205,7 +11227,7 @@ Transform:
   m_GameObject: {fileID: 5414838699708087844}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.432, z: 0.079}
+  m_LocalPosition: {x: 0, y: 0.432, z: 0.013}
   m_LocalScale: {x: 1.0945789, y: 0.3104424, z: 1.8068277}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16513,7 +16535,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -21815,7 +21837,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -21908,6 +21930,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4707596240683146441}
   - component: {fileID: 4869653298587143828}
+  - component: {fileID: 2957486578757299826}
   m_Layer: 0
   m_Name: "Module Gla\xE7on"
   m_TagString: Hunter
@@ -21949,8 +21972,22 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.2491, y: 0.23466867, z: 4.649729}
-  m_Center: {x: -0.000000834465, y: 0.31425753, z: -0.12938118}
+  m_Size: {x: 2.189386, y: 0.22843818, z: 4.5262775}
+  m_Center: {x: 0, y: 0.31425753, z: -0.12938118}
+--- !u!114 &2957486578757299826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916542989104649210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dfc7fb5ec16dd24fa1f7d5695f25084, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 7980663947639176993}
+  carControl: {fileID: 5291912312621348842}
 --- !u!1 &7962281759728403491
 GameObject:
   m_ObjectHideFlags: 0

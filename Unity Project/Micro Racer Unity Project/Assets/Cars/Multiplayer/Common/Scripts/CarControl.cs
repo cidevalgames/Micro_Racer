@@ -1,13 +1,13 @@
-using System;
+using FishNet;
 using FishNet.Component.Prediction;
 using FishNet.Object;
 using FishNet.Object.Prediction;
 using FishNet.Transporting;
+using System;
 using Unity.Cinemachine;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using FishNet;
 
 namespace Car.Multiplayer.Common
 {
@@ -57,6 +57,9 @@ namespace Car.Multiplayer.Common
         [SerializeField] private bool printInput = false;
         [SerializeField] private bool printSteerAngle = false;
         [SerializeField] private bool printWheelMeshesTransform = false;
+        
+        [Header("CURRENT STATE")]
+        [HideInInspector] public bool oiled;
 
         #region Types
 
@@ -65,12 +68,14 @@ namespace Car.Multiplayer.Common
             public float Horizontal;
             public float Vertical;
             public bool Brake;
+            public bool IsOiled;
 
-            public MoveData(float horizontal, float vertical, bool brake) : this()
+            public MoveData(float horizontal, float vertical, bool brake, bool isOiled) : this()
             {
                 Horizontal = horizontal;
                 Vertical = vertical;
                 Brake = brake;
+                IsOiled = isOiled;
             }
 
             private uint _tick;
@@ -98,17 +103,22 @@ namespace Car.Multiplayer.Common
 
             // Brake torques
             public readonly float FlBrakeTorque;
-            public readonly float Fm_rigidbodyrakeTorque;
+            public readonly float FrBrakeTorque;
             public readonly float BlBrakeTorque;
-            public readonly float Bm_rigidbodyrakeTorque;
+            public readonly float BrBrakeTorque;
+
+            // Tire stiffness
+            public readonly float FlForwardStiffness, FrForwardStiffness, BlForwardStiffness, BrForwardStiffness;
+            public readonly float FlSidewaysStiffness, FrSidewaysStiffness, BlSidewaysStiffness, BrSidewaysStiffness;
 
             public ReconcileData(Vector3 position, Quaternion rotation, Vector3 linearVelocity, Vector3 angularVelocity,
                 float flSteerAngle, float frSteerAngle,
                 float flMotorTorque, float frMotorTorque,
-                float flBrakeTorque, float fm_rigidbodyrakeTorque, float blBrakeTorque, float bm_rigidbodyrakeTorque) : this()
+                float flBrakeTorque, float frBrakeTorque, float blBrakeTorque, float brBrakeTorque,
+                float flForwardStiffness, float frForwardStiffness, float blForwardStiffness, float brForwardStiffness,
+                float flSidewaysStiffness, float frSidewaysStiffness, float blSidewaysStiffness, float brSidewaysStiffness) : this()
             {
                 _tick = 0;
-
                 // Rigidbody
                 Position = position;
                 Rotation = rotation;
@@ -125,9 +135,20 @@ namespace Car.Multiplayer.Common
 
                 // Brake torques
                 FlBrakeTorque = flBrakeTorque;
-                Fm_rigidbodyrakeTorque = fm_rigidbodyrakeTorque;
+                FrBrakeTorque = frBrakeTorque;
                 BlBrakeTorque = blBrakeTorque;
-                Bm_rigidbodyrakeTorque = bm_rigidbodyrakeTorque;
+                BrBrakeTorque = brBrakeTorque;
+
+                // Tire stiffness
+                FlForwardStiffness = flForwardStiffness;
+                FrForwardStiffness = frForwardStiffness;
+                BlForwardStiffness = blForwardStiffness;
+                BrForwardStiffness = brForwardStiffness;
+
+                FlSidewaysStiffness = flSidewaysStiffness;
+                FrSidewaysStiffness = frSidewaysStiffness;
+                BlSidewaysStiffness = blSidewaysStiffness;
+                BrSidewaysStiffness = brSidewaysStiffness;
             }
 
             private uint _tick;
@@ -153,8 +174,8 @@ namespace Car.Multiplayer.Common
                 var cameraFollow = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineCamera>();
 
                 CameraTarget newTarget = new CameraTarget();
-                newTarget.TrackingTarget = visual;
-                newTarget.LookAtTarget = visual;
+                newTarget.TrackingTarget = this.transform;
+                newTarget.LookAtTarget = this.transform;
                 newTarget.CustomLookAtTarget = true;
 
                 cameraFollow.Target = newTarget;
@@ -196,7 +217,7 @@ namespace Car.Multiplayer.Common
             if (base.IsOwner)
             {
                 Reconciliation(default);
-                MoveData md = CheckInput(printInput);
+                MoveData md = CheckInput(oiled, printInput);
                 Move(md);
             }
             else
@@ -219,7 +240,7 @@ namespace Car.Multiplayer.Common
 
         [Replicate]
         private void Move(MoveData md,
-            ReplicateState state = ReplicateState.Invalid, 
+            ReplicateState state = ReplicateState.Invalid,
             Channel channel = Channel.Unreliable)
         {
             if (state.IsFuture())
@@ -260,7 +281,7 @@ namespace Car.Multiplayer.Common
 
             if (verticalInput != 0)
             {
-                currentMotorTorque = motorTorqueCurve.Evaluate(speedFactor) * 1000;
+                currentMotorTorque = motorTorqueCurve.Evaluate(speedFactor + 0.01f) * 1000;
             }
 
             ///float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
@@ -290,6 +311,22 @@ namespace Car.Multiplayer.Common
                 else
                 {
                     ApplyReverse();
+                }
+            }
+
+            if (md.IsOiled)
+            {
+                for (int i = 0; i < wheels.Length; i++)
+                {
+                    Debug.Log("oil");
+                    ApplyOil(wheels[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < wheels.Length; i++)
+                {
+                    ClearOil(wheels[i]);
                 }
             }
         }
@@ -362,7 +399,7 @@ namespace Car.Multiplayer.Common
         /// <param name="currentMotorTorque"></param>
         private void ApplyMotorTorques(float currentMotorTorque)
         {
-            foreach (Wheel w  in wheels)
+            foreach (Wheel w in wheels)
             {
                 if (w.motorized)
                 {
@@ -413,8 +450,10 @@ namespace Car.Multiplayer.Common
             ReconcileData rd = new ReconcileData(transform.position, transform.rotation, m_rigidbody.linearVelocity, m_rigidbody.angularVelocity,
                     wheels[0].wheelCollider.steerAngle, wheels[1].wheelCollider.steerAngle,
                     wheels[0].wheelCollider.motorTorque, wheels[1].wheelCollider.motorTorque,
-                    wheels[0].wheelCollider.brakeTorque, wheels[1].wheelCollider.brakeTorque, wheels[2].wheelCollider.brakeTorque, wheels[3].wheelCollider.brakeTorque);
-
+                    wheels[0].wheelCollider.brakeTorque, wheels[1].wheelCollider.brakeTorque, wheels[2].wheelCollider.brakeTorque, wheels[3].wheelCollider.brakeTorque,
+                    wheels[0].wheelCollider.forwardFriction.stiffness, wheels[1].wheelCollider.forwardFriction.stiffness, wheels[2].wheelCollider.forwardFriction.stiffness, wheels[3].wheelCollider.forwardFriction.stiffness,
+                    wheels[0].wheelCollider.sidewaysFriction.stiffness, wheels[1].wheelCollider.sidewaysFriction.stiffness, wheels[2].wheelCollider.sidewaysFriction.stiffness, wheels[3].wheelCollider.sidewaysFriction.stiffness);
+            
             Reconciliation(rd);
         }
 
@@ -433,14 +472,14 @@ namespace Car.Multiplayer.Common
             wheels[0].wheelCollider.motorTorque = rd.FlMotorTorque;
             wheels[1].wheelCollider.motorTorque = rd.FrMotorTorque;
             wheels[0].wheelCollider.brakeTorque = rd.FlBrakeTorque;
-            wheels[1].wheelCollider.brakeTorque = rd.Fm_rigidbodyrakeTorque;
+            wheels[1].wheelCollider.brakeTorque = rd.FrBrakeTorque;
             wheels[2].wheelCollider.brakeTorque = rd.BlBrakeTorque;
-            wheels[3].wheelCollider.brakeTorque = rd.Bm_rigidbodyrakeTorque;
+            wheels[3].wheelCollider.brakeTorque = rd.BrBrakeTorque;
         }
 
         #endregion
 
-        private MoveData CheckInput(bool print = false)
+        private MoveData CheckInput(bool isOiled, bool print = false)
         {
             if (!base.IsOwner)
                 return default;
@@ -449,7 +488,7 @@ namespace Car.Multiplayer.Common
             var vertical = _gasAction.ReadValue<float>();
             var brake = _brakeAction.IsPressed();
 
-            MoveData md = new MoveData(horizontal, vertical, brake);
+            MoveData md = new MoveData(horizontal, vertical, brake, isOiled);
 
             if (print)
                 Debug.Log($"Horizontal: {horizontal}, Vertical: {vertical}, Brake: {brake}");
@@ -500,10 +539,44 @@ namespace Car.Multiplayer.Common
                 {
                     w.trailRenderer.emitting = false;
                 }
-            }            
+            }
         }
 
-        //void SetupCenterOfMass()
+        /// <summary>
+        /// Apply oil on a wheel.
+        /// </summary>
+        /// <param name="wheel"></param>
+        private void ApplyOil(Wheel wheel)
+        {
+            Debug.Log($"{this.name} is oiled");
+
+            var sidewaysFriction = wheel.wheelCollider.sidewaysFriction;
+            var forwardFriction = wheel.wheelCollider.forwardFriction;
+
+            sidewaysFriction.stiffness = 0;
+            forwardFriction.stiffness = 0;
+
+            wheel.wheelCollider.sidewaysFriction = sidewaysFriction;
+            wheel.wheelCollider.forwardFriction = forwardFriction;
+        }
+
+        /// <summary>
+        /// Clear oil on a wheel.
+        /// </summary>
+        /// <param name="wheel"></param>
+        private void ClearOil(Wheel wheel)
+        {
+            var sidewaysFriction = wheel.wheelCollider.sidewaysFriction;
+            var forwardFriction = wheel.wheelCollider.forwardFriction;
+
+            sidewaysFriction.stiffness = wheel.savedParameters.x;
+            forwardFriction.stiffness = wheel.savedParameters.y;
+
+            wheel.wheelCollider.sidewaysFriction = sidewaysFriction;
+            wheel.wheelCollider.forwardFriction = forwardFriction;
+        }
+
+        //private void SetupCenterOfMass()
         //{
         //    // Adjust center of mass vertically, to help prevent the car from rolling
         //    m_rigidbody.centerOfMass = centreOfGravity.transform.position;
@@ -513,10 +586,13 @@ namespace Car.Multiplayer.Common
 
         private void Awake()
         {
+            foreach (var wheel in wheels)
+                wheel.Initialize();
+
             m_rigidbody = GetComponent<Rigidbody>();
 
             _playerCamera = Camera.main;
-            
+
             m_carHealth = GetComponent<CarHealth>();
 
             networkCollisions = GetComponentsInChildren<NetworkCollision>();

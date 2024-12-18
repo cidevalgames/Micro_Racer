@@ -13,5 +13,14 @@ namespace Car.Multiplayer.Common
         [Header("Parameters")]
         public bool steerable;
         public bool motorized;
+        
+        public Vector2 savedParameters;
+
+        public void Initialize()
+        {
+            savedParameters.x = wheelCollider.sidewaysFriction.stiffness;
+            savedParameters.y = wheelCollider.forwardFriction.stiffness;
+        }
+
     }
 }
