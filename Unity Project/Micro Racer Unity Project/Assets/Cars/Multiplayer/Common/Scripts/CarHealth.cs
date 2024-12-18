@@ -24,7 +24,9 @@ namespace Car.Multiplayer.Common
         [SerializeField] private int maxHealth = 100;
 
         [Header("UI")]
-        [SerializeField] private Slider healthBar;
+        //[SerializeField] private Slider healthBar;
+        [SerializeField] private Image myHealthBarFill;
+        [SerializeField] private Image allyHealthBarFill;
         [SerializeField] private TextMeshProUGUI healthPercentage;
 
         [Header("DEBUG")]
@@ -94,7 +96,7 @@ namespace Car.Multiplayer.Common
             float amount = Mathf.InverseLerp(0, maxHealth, script._health.Value);
             amount = Mathf.Round(amount * 1000.0f) * 0.001f;
 
-            script.healthBar.value = amount;
+            script.myHealthBarFill.fillAmount = amount;
 
             script.healthPercentage.text = $"{(amount * 100).ToString("00.0")} %";
         }

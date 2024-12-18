@@ -104,7 +104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ally
+  m_text: Player 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd909fcf939ce914fb931045b0fcc8bf, type: 2}
   m_sharedMaterial: {fileID: -1883212776357967767, guid: bd909fcf939ce914fb931045b0fcc8bf, type: 2}
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 3128683171497106863}
   - component: {fileID: 3207901350225656421}
   m_Layer: 5
-  m_Name: PlayerLifeBar
+  m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,11 +341,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 845468704595773070}
+  m_Father: {fileID: 549104076374190388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -16.0917, y: -34.8}
+  m_AnchoredPosition: {x: 0.00001335144, y: -0}
   m_SizeDelta: {x: 280.2531, y: 55.1939}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3128683171497106863
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.607
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1489,7 +1489,7 @@ GameObject:
   - component: {fileID: 7578841815015572922}
   - component: {fileID: 141735495094946733}
   m_Layer: 5
-  m_Name: PlayerLifeBarBack
+  m_Name: Bunny_0_LifeBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1506,7 +1506,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5233182710430378735}
   m_Father: {fileID: 845468704595773070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1564,7 +1565,7 @@ GameObject:
   - component: {fileID: 5571937292507551426}
   - component: {fileID: 7444755140457482696}
   m_Layer: 5
-  m_Name: AllyLifeBarBack
+  m_Name: Bunny_1_LifeBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1581,7 +1582,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7866425837585091067}
   m_Father: {fileID: 845468704595773070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
@@ -1638,12 +1640,13 @@ GameObject:
   - component: {fileID: 7866425837585091067}
   - component: {fileID: 5296044353746665160}
   - component: {fileID: 509988671778832374}
+  - component: {fileID: 1457994956577723430}
   m_Layer: 5
-  m_Name: AllyLifeBar
+  m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &7866425837585091067
 RectTransform:
@@ -1657,11 +1660,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 845468704595773070}
+  m_Father: {fileID: 6381943049316421382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 74.30001, y: 4.600004}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -72.621, y: -0.00002861023}
   m_SizeDelta: {x: 145.234, y: 28.6028}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5296044353746665160
@@ -1693,15 +1696,35 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -316198734, guid: a8bcfa1dde66b8f429e7bbed36fc6a6b, type: 3}
-  m_Type: 3
-  m_PreserveAspect: 1
+  m_Type: 0
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.552
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1457994956577723430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7261218781081308766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &7301311850914110366
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,9 +2053,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 549104076374190388}
-  - {fileID: 5233182710430378735}
   - {fileID: 6381943049316421382}
-  - {fileID: 7866425837585091067}
   - {fileID: 7983911754139941200}
   m_Father: {fileID: 8386715571120021976}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

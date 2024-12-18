@@ -8,6 +8,11 @@ using Unity.Cinemachine;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+<<<<<<< HEAD
+=======
+using FishNet;
+using Unity.VisualScripting;
+>>>>>>> 14d2d08 (Ajout de l'interface de la vie du bunny (WIP))
 
 namespace Car.Multiplayer.Common
 {
