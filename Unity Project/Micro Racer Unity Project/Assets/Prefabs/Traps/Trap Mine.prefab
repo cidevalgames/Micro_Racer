@@ -123,9 +123,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnabled: 1
-  strength: 15000
-  fuseTime: 0.2
-  timeBeforeAttack: 0
+  strength: 20000
+  fuseTime: 0
+  timeBeforeAttack: 0.1
   playerLifeAffected: {fileID: 0}
   particles: {fileID: 6504459270852261744}
 --- !u!1 &7953082572110963533

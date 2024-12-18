@@ -469,12 +469,42 @@ namespace Car.Multiplayer.Common
             // Set WheelColliders
             wheels[0].wheelCollider.steerAngle = rd.FlSteerAngle;
             wheels[1].wheelCollider.steerAngle = rd.FrSteerAngle;
+
             wheels[0].wheelCollider.motorTorque = rd.FlMotorTorque;
             wheels[1].wheelCollider.motorTorque = rd.FrMotorTorque;
+
             wheels[0].wheelCollider.brakeTorque = rd.FlBrakeTorque;
             wheels[1].wheelCollider.brakeTorque = rd.FrBrakeTorque;
             wheels[2].wheelCollider.brakeTorque = rd.BlBrakeTorque;
             wheels[3].wheelCollider.brakeTorque = rd.BrBrakeTorque;
+
+            // Fl wheel stiffness
+            WheelFrictionCurve fwdFriction = wheels[0].wheelCollider.forwardFriction;
+            WheelFrictionCurve swFriction = wheels[0].wheelCollider.sidewaysFriction;
+
+            fwdFriction.stiffness = rd.FlForwardStiffness;
+            swFriction.stiffness = rd.FlSidewaysStiffness;
+
+            // Fr wheel stiffness
+            fwdFriction = wheels[1].wheelCollider.forwardFriction;
+            swFriction = wheels[1].wheelCollider.sidewaysFriction;
+
+            fwdFriction.stiffness = rd.FrForwardStiffness;
+            swFriction.stiffness = rd.FrSidewaysStiffness;
+
+            // Bl wheel stiffness
+            fwdFriction = wheels[2].wheelCollider.forwardFriction;
+            swFriction = wheels[2].wheelCollider.sidewaysFriction;
+
+            fwdFriction.stiffness = rd.BlForwardStiffness;
+            swFriction.stiffness = rd.BlSidewaysStiffness;
+
+            // Br wheel stiffness
+            fwdFriction = wheels[3].wheelCollider.forwardFriction;
+            swFriction = wheels[3].wheelCollider.sidewaysFriction;
+
+            fwdFriction.stiffness = rd.BrForwardStiffness;
+            swFriction.stiffness = rd.BrSidewaysStiffness;
         }
 
         #endregion

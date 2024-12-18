@@ -8,7 +8,7 @@ public class PlayerLife : MonoBehaviour
     float maxPV;
     float currentPV;
 
-    void Start()
+    private void Start()
     {
         if (m_rigidbody == null)
             m_rigidbody = GetComponent<Rigidbody>();
@@ -19,6 +19,7 @@ public class PlayerLife : MonoBehaviour
     public void MineAttack(float strength, Vector3 pointOfImpact)
     {
         m_rigidbody.AddForce(strength * Vector3.up, ForceMode.Impulse);
+        Debug.Log("Add force");
         //transform.InverseTransformDirection(pointOfImpact);
     }
 }

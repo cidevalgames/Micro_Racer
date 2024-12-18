@@ -39,16 +39,14 @@ namespace Traps
             }
         }
 
-        public override void OnTriggerStay(Collider other)
+        public override void TriggerEnter(Collider other)
         {
-            base.OnTriggerStay(other);
-        
             CarControl target = other.GetComponentInParent<CarControl>();
 
             StartCoroutine(OnTriggerCoroutine(target));
         }
 
-        public override IEnumerator OnTriggerCoroutine(CarControl target)
+        private IEnumerator OnTriggerCoroutine(CarControl target)
         {
             target.oiled = true;
 
@@ -56,7 +54,7 @@ namespace Traps
 
             target.oiled = false;
 
-            base.OnTriggerCoroutine(target);
+            isTriggered = false;
         }
     }
 }

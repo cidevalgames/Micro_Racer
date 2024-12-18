@@ -4,6 +4,7 @@ using System;
 using System.RandomExtension;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [InitializeOnLoadAttribute]
 public static class PlayModeStateChangedExample
 {
@@ -23,3 +24,4 @@ public static class PlayModeStateChangedExample
         }
     }
 }
+#endif

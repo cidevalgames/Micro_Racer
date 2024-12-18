@@ -21,7 +21,7 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/Car/Car_Bunny.unity
+    m_path: Assets/Scenes/Multiplayer/Fishnet/Multiplayer_Fishnet_Test.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings:

@@ -21,7 +21,7 @@ namespace Traps
                 return;
         }
 
-        public virtual void OnTriggerStay(Collider other)
+        public virtual void OnTriggerEnter(Collider other)
         {
             if (!isEnabled)
                 return;
@@ -29,21 +29,28 @@ namespace Traps
             // Checks if the entered collider is from a player
             bool isPlayer = (other.CompareTag("Hunter") || other.CompareTag("Bunny"));
 
-            if (!isPlayer && isTriggered)
+            if (!isPlayer)
+                return;
+
+            if (isTriggered)
                 return;
 
             isTriggered = true;
 
             Debug.Log($"{other.name} has entered trap {this.name}.");
 
+            TriggerEnter(other);
+
             //Debug.Log("Heuuuuu......... j'espère que c'était pas la voiture parce que là je viens de la laisser passer");
         }
 
-        public virtual IEnumerator OnTriggerCoroutine(CarControl target = null)
-        {
-            isTriggered = false;
+        public virtual void TriggerEnter(Collider other) { }
 
-            yield return null;
-        }
+        //public virtual IEnumerator OnTriggerCoroutine(CarControl target = null)
+        //{
+            
+
+        //    yield return null;
+        //}
     }
 }

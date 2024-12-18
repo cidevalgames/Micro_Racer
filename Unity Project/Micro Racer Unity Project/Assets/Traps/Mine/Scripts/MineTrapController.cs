@@ -24,27 +24,26 @@ namespace Traps
                 particles = gameObject.GetComponentInChildren<ParticleSystem>();
         }
 
-        public override void OnTriggerStay(Collider other)
+        public override void TriggerEnter(Collider other)
         {
-            base.OnTriggerStay(other);
-
             playerLifeAffected = other.GetComponent<PlayerLife>();
 
             StartCoroutine(OnTriggerCoroutine());
         }
 
-        public override IEnumerator OnTriggerCoroutine(CarControl target = null)
+        private IEnumerator OnTriggerCoroutine(CarControl target = null)
         {
             yield return new WaitForSeconds(fuseTime);
 
-            Physics.Raycast(transform.position, gameObject.transform.up, out RaycastHit hit, 0.3f);
+            Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 0.3f);
+
             particles.Play();
 
             playerLifeAffected.MineAttack(strength, hit.point);
 
             yield return new WaitForSeconds(timeBeforeAttack);
 
-            base.OnTriggerCoroutine(target);
+            isTriggered = false;
         }
     }
 }
